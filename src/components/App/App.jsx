@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { useState } from "react";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -11,67 +11,55 @@ import Button from "components/Button/Button";
 import Loader from "components/Loader/Loader";
 import { fetchData } from "../../servises/api";
 
-export class App extends Component {
-  state = {
-    newQuery: "",
-    gallery: [],
-    page: null,
-    loadMore: false,
-    loader: false,
-  }
+
+const App = () => {
+  const [newQuery, setNewQuery] = useState("");
+  const [gallery, setGallery] = useState([]);
+  const [page, setPage] = useState(null);
+  const [loadMore, setLoadMore] = useState(false);
+  const [loader, setLoader] = useState(false);
+
  
-  fatchImages = async () => {
+  const fatchImages = async () => {
     try {
-      this.setState({ loader: true });
+      setLoader(true);
 
       const perPage = 12;
-      const { newQuery, page } = this.state;
+
       const images = await fetchData(newQuery, page);
-      this.setState((prevState) => ({
-        gallery: [...prevState.gallery, ...images.hits],
-        loadMore: page < Math.ceil(images.totalHits / perPage)
-      }));
-      
+      setGallery(prevState => [...prevState, ...images.hits])
+      setLoadMore(page < Math.ceil(images.totalHits / perPage))  
     }
     catch (error) {
         console.log(error.message)
     }
     finally {
-      this.setState({loader: false});
+      setLoader(false);
     }
   }
 
-  handleAddData = (query) => {
-    this.setState({
-      newQuery: query.data,
-      gallery: [],
-      page: null,
-    })
-  }
+  const handleAddData = (query) => {setNewQuery(query.data)}
 
-  handleLoadMore = () => {
-    this.setState(prevState => ({ page: prevState.page + 1}))
+  const handleLoadMore = () => {
+    setPage(page => page + 1); 
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { newQuery, page } = this.state;
     if(prevState.newQuery !== newQuery || prevState.page !== page)
-     this.fatchImages()
-
+     fatchImages()
   }
 
-  render() {
-    const { gallery, loadMore, loader } = this.state;
-      return (
-        <AppWrapper>
-          <Searchbar handleAddData={this.handleAddData} />
-          <ImageGallery gallery={gallery}></ImageGallery>
-          {loader && <Loader/> }
-          {loadMore && <Button handleLoadMore={this.handleLoadMore} />}
-          <ToastContainer />
-        </AppWrapper>
-      );
-    }
-  }
+  return (
+    <AppWrapper>
+      <Searchbar handleAddData={handleAddData} />
+      <ImageGallery gallery={gallery}></ImageGallery>
+      {loader && <Loader/> }
+      {loadMore && <Button handleLoadMore={handleLoadMore} />}
+      <ToastContainer />
+    </AppWrapper>
+  );
+  
+}
 
 
+export default App;
