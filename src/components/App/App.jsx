@@ -44,11 +44,12 @@ const App = () => {
     setPage(page => page + 1); 
   }
 
-  componentDidUpdate(prevProps, prevState) {
+ /*  componentDidUpdate(prevProps, prevState) {
+    const { newQuery, page } = this.state;
     if(prevState.newQuery !== newQuery || prevState.page !== page)
-     fatchImages()
-  }
 
+  } */
+  fatchImages()
   return (
     <AppWrapper>
       <Searchbar handleAddData={handleAddData} />
