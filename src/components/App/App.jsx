@@ -36,11 +36,9 @@ export const App = () => {
         const perPage = 12;
 
         const images = await fetchData(newQuery, page);
-        console.log("images", images);
         
         setGallery((prevGallery) => [...prevGallery, ...images.hits])
-        console.log("gallery", gallery);
-        
+          
         setLoadMore(page < Math.ceil(images.totalHits / perPage));
       } catch (error) {
         console.log(error.message);
@@ -50,8 +48,7 @@ export const App = () => {
     };
 
     fetchImage();
-  }, [newQuery, page]);/* тут react "каже" вписати в залежність  gallery, або взагалі видалити масив залежностей, в двох випадках це зациклює програму ((( не знаю як зробити правильно,залишила як є, бо працює ;) */
-
+  }, [newQuery, page]);
 
   const handleLoadMore = () => {
     setPage((prevPage) => prevPage + 1);
