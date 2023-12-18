@@ -17,7 +17,8 @@ export async function fetchData(q, page) {
 try {
     const response = await axios.get(`${BASE_URL}?${params}`)
     const data = await response.data; 
-
+    console.log(data);
+    
     return data; 
 
 } catch (error) {

@@ -10,19 +10,13 @@ const Searchbar = ({handleAddData}) => {
 
   const handleInputChange = (evt) => {
     const value = evt.target.value.trim();
-    setData(value);  
+    setData(value); 
   }
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
     
-    const value = {
-      data: this.state.data,
-    };
-
-    console.log(value.data);
-
-    if (value === '') {
+    if (data === '') {
       toast.error('Please enter your request!', {
         position: 'top-center',
         autoClose: 3000,
@@ -38,7 +32,7 @@ const Searchbar = ({handleAddData}) => {
   
     setData('');
   
-    handleAddData(value);
+    handleAddData(data);
   };
     return (
         <Header>
@@ -61,7 +55,4 @@ const Searchbar = ({handleAddData}) => {
     )
 
 }
-
-
-
 export default Searchbar;

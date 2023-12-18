@@ -1,54 +1,45 @@
-import { Component } from "react";
+import { useState } from "react";
 
-import {Modal}  from "components/Modal/Modal";
+import Modal  from "components/Modal/Modal";
 
 import { Items } from "./ImageGalleryItem.styled";
 
 
-
-
-export class ImageGalleryItem extends Component{
-    state = {
-        modalIsOpen: false,
+const ImageGalleryItem = ({largeImageURL, tags, webformatURL}) => {
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    
+    const onOpenModal = () => {
+        setModalIsOpen(true);
     }
-
-    onOpenModal = () => {
-        this.setState({modalIsOpen: true,})
-    }
-
-    onCloseOverlay = (evt) => {
-
+    const onCloseOverlay = (evt) => {
         if (evt.target === evt.currentTarget) {
-            this.setState({modalIsOpen: false,})
+            setModalIsOpen(false);
         } 
     }
-    onCloseEsc = (evt) => {
+    const onCloseEsc = (evt) => {
         if ( evt.code === "Escape") {
-            this.setState({modalIsOpen: false,})
+            setModalIsOpen(false)
         } 
     }
-    
-    render() {
-        const { webformatURL, tags, largeImageURL } = this.props
-        const { modalIsOpen} = this.state
-        return (
-            <>
-            <Items>
-                <img
-                        className="gallary-img"
-                        src={webformatURL}
-                        alt={tags}
-                        loading="lazy"
-                        onClick={this.onOpenModal}
-                    />
-                    
-            </Items>
-                {modalIsOpen && <Modal largeImageURL={largeImageURL} tags={tags} onCloseOverlay={this.onCloseOverlay} onCloseEsc={ this.onCloseEsc} />}
-            </>
-        )
-    
-    }
+
+    return (
+        <>
+        <Items>
+            <img
+                    className="gallary-img"
+                    src={webformatURL}
+                    alt={tags}
+                    loading="lazy"
+                    onClick={onOpenModal}
+                />
+                
+        </Items>
+            {modalIsOpen && <Modal largeImageURL={largeImageURL} tags={tags} onCloseOverlay={onCloseOverlay} onCloseEsc={ onCloseEsc} />}
+        </>
+    )
+
 }
+
 
 
 export default ImageGalleryItem;
